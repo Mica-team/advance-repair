@@ -1,0 +1,5 @@
+{
+  "enchantment.advancerepair.mending_ii": "Mending II",
+  "item.advancerepair.mending_ii_book": "Mending II Enchanted Book",
+  "advancerepair.mending_ii.description": "Repairs the most damaged eligible item in your inventory at twice the normal Mending rate."
+}
