@@ -1,6 +1,5 @@
 package com.gamerofpro.advancerepair;
 
-import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -32,14 +31,36 @@ public class AdvanceRepairMod {
     }
 
     public AdvanceRepairMod(IEventBus modEventBus, ModContainer modContainer) {
-        modContainer.registerConfig(ModConfig.Type.COMMON, SPEC);
 
-        modContainer.registerExtensionPoint(
-                IConfigScreenFactory.class,
-                (container, parentScreen) -> new ModConfigScreen(parentScreen)
+        // Register configuration
+        modContainer.registerConfig(
+                ModConfig.Type.COMMON,
+                SPEC
         );
 
+        // Register config screen
+        modContainer.registerExtensionPoint(
+                IConfigScreenFactory.class,
+                (container, parentScreen) ->
+                        new ModConfigScreen(parentScreen)
+        );
+
+        /*
+         * IMPORTANT:
+         *
+         * These handlers use static @SubscribeEvent methods,
+         * so they MUST be registered using .class.
+         *
+         * This fixes the exact crash we saw:
+         *
+         * "Expected @SubscribeEvent method ... to NOT be static
+         * because register() was called with an instance type."
+         */
+
         NeoForge.EVENT_BUS.register(AnvilHandler.class);
+
         NeoForge.EVENT_BUS.register(TooltipHandler.class);
+
+        NeoForge.EVENT_BUS.register(WelcomeBookHandler.class);
     }
 }
