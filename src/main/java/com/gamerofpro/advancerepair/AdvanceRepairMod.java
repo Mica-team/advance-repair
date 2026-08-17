@@ -18,28 +18,25 @@ public class AdvanceRepairMod {
     public static final ModConfigSpec.ConfigValue<Boolean> MOD_ENABLED;
     public static final ModConfigSpec.ConfigValue<String> TARGET_MOD_ID;
 
-    public AdvanceRepairMod(IEventBus modEventBus, ModContainer modContainer) {
-
+    static {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
         builder.push("Advance Repair Settings");
 
-        MOD_ENABLED = builder
-                .define("modEnabled", true);
-
-        TARGET_MOD_ID = builder
-                .define("targetModId", "minecraft");
+        MOD_ENABLED = builder.define("modEnabled", true);
+        TARGET_MOD_ID = builder.define("targetModId", "minecraft");
 
         builder.pop();
 
         SPEC = builder.build();
+    }
 
+    public AdvanceRepairMod(IEventBus modEventBus, ModContainer modContainer) {
         modContainer.registerConfig(ModConfig.Type.COMMON, SPEC);
 
         modContainer.registerExtensionPoint(
                 IConfigScreenFactory.class,
-                (container, parentScreen) ->
-                        new ModConfigScreen(parentScreen)
+                (container, parentScreen) -> new ModConfigScreen(parentScreen)
         );
 
         NeoForge.EVENT_BUS.register(new AnvilHandler());
