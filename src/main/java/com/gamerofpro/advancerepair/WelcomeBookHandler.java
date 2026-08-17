@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.Filterable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.WrittenBookContent;
@@ -18,69 +19,83 @@ public class WelcomeBookHandler {
             "advancerepair_welcome_book_given";
 
     @SubscribeEvent
-    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+    public static void onPlayerLoggedIn(
+            PlayerEvent.PlayerLoggedInEvent event) {
 
         if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
         }
 
-        // Only give the book once per player.
+        // Only give the book once to each player.
         if (player.getPersistentData().getBoolean(BOOK_GIVEN_TAG)) {
             return;
         }
 
         ItemStack book = new ItemStack(Items.WRITTEN_BOOK);
 
-        List<Component> pages = List.of(
-
-                // PAGE 1
-                Component.literal(
-                        "Dear player,\n\n"
+        /*
+         * PAGE 1
+         */
+        Component page1 = Component.literal(
+                "Dear player,\n\n"
                         + "We know it has been a while since "
                         + "Advance Repair received an update.\n\n"
                         + "We haven't forgotten about the mod."
-                ),
+        );
 
-                // PAGE 2
-                Component.literal(
-                        "We've been working behind the scenes "
+        /*
+         * PAGE 2
+         */
+        Component page2 = Component.literal(
+                "We've been working behind the scenes "
                         + "on new ideas and improvements.\n\n"
                         + "Thank you for still playing.\n\n"
                         + "We are sorry for the long wait.\n\n"
                         + "— HR"
-                ),
-
-                // PAGE 3 — EASTER EGG
-                Component.empty()
-                        .append(
-                                Component.literal("Psst...\n\n")
-                                        .withStyle(ChatFormatting.DARK_GRAY)
-                        )
-                        .append(
-                                Component.literal(
-                                        "You found an Easter Egg.\n\n"
-                                        + "Or maybe...\n"
-                                        + "the game found you."
-                                )
-                                .withStyle(ChatFormatting.OBFUSCATED)
-                        )
-                        .append(
-                                Component.literal(
-                                        "\n\nSomething isn't quite right..."
-                                )
-                                .withStyle(ChatFormatting.DARK_RED)
-                        )
         );
 
         /*
-         * Minecraft 1.21.1 written-book component.
-         *
+         * PAGE 3 — EASTER EGG
+         */
+        Component page3 = Component.empty()
+                .append(
+                        Component.literal("Psst...\n\n")
+                                .withStyle(ChatFormatting.DARK_GRAY)
+                )
+                .append(
+                        Component.literal(
+                                "You found an Easter Egg.\n\n"
+                                        + "Or maybe...\n"
+                                        + "the game found you."
+                        )
+                        .withStyle(ChatFormatting.OBFUSCATED)
+                )
+                .append(
+                        Component.literal(
+                                "\n\nSomething isn't quite right..."
+                        )
+                        .withStyle(ChatFormatting.DARK_RED)
+                );
+
+        /*
+         * Written books require Filterable<String>
+         * for the title and Filterable<Component>
+         * for every page in Minecraft 1.21.1.
+         */
+        List<Filterable<Component>> pages = List.of(
+                Filterable.passThrough(page1),
+                Filterable.passThrough(page2),
+                Filterable.passThrough(page3)
+        );
+
+        /*
          * Title: A Message from HR
          * Author: HR
-         * Generation: 0 (original)
+         * Generation: 0 = original book
+         * Resolved: true
          */
         WrittenBookContent content = new WrittenBookContent(
-                "A Message from HR",
+                Filterable.passThrough("A Message from HR"),
                 "HR",
                 0,
                 pages,
@@ -95,7 +110,7 @@ public class WelcomeBookHandler {
         // Give the book to the player.
         player.getInventory().add(book);
 
-        // Remember that this player received it.
+        // Remember that this player already received it.
         player.getPersistentData().putBoolean(
                 BOOK_GIVEN_TAG,
                 true
