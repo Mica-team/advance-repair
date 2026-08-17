@@ -30,37 +30,23 @@ public class AdvanceRepairMod {
         SPEC = builder.build();
     }
 
-    public AdvanceRepairMod(IEventBus modEventBus, ModContainer modContainer) {
-
-        // Register configuration
+    public AdvanceRepairMod(
+            IEventBus modEventBus,
+            ModContainer modContainer
+    ) {
         modContainer.registerConfig(
                 ModConfig.Type.COMMON,
                 SPEC
         );
 
-        // Register config screen
         modContainer.registerExtensionPoint(
                 IConfigScreenFactory.class,
                 (container, parentScreen) ->
                         new ModConfigScreen(parentScreen)
         );
 
-        /*
-         * IMPORTANT:
-         *
-         * These handlers use static @SubscribeEvent methods,
-         * so they MUST be registered using .class.
-         *
-         * This fixes the exact crash we saw:
-         *
-         * "Expected @SubscribeEvent method ... to NOT be static
-         * because register() was called with an instance type."
-         */
-
         NeoForge.EVENT_BUS.register(AnvilHandler.class);
-
         NeoForge.EVENT_BUS.register(TooltipHandler.class);
-
-        NeoForge.EVENT_BUS.register(WelcomeBookHandler.class);
+        NeoForge.EVENT_BUS.register(MendingIIHandler.class);
     }
-}
+        }
