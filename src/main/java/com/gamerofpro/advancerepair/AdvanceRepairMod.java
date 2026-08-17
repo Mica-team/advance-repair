@@ -40,6 +40,6 @@ public class AdvanceRepairMod {
         );
 
         NeoForge.EVENT_BUS.register(AnvilHandler.class);
-        NeoForge.EVENT_BUS.register(new TooltipHandler());
+        NeoForge.EVENT_BUS.register(TooltipHandler.class);
     }
 }
