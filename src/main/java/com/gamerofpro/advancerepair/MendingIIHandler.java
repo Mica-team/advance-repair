@@ -4,12 +4,11 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class MendingIIHandler {
 
-    private static final ResourceKey<Enchantment> MENDING_II =
+    private static final ResourceKey<net.minecraft.world.item.enchantment.Enchantment> MENDING_II =
             ResourceKey.create(
                     Registries.ENCHANTMENT,
                     ResourceLocation.fromNamespaceAndPath(
@@ -30,14 +29,47 @@ public class MendingIIHandler {
     @SubscribeEvent
     public static void onXpPickup(PlayerXpEvent.PickupXp event) {
         Player player = event.getEntity();
-        ExperienceOrb orb = event.getOrb();
 
+        // Server only.
         if (player.level().isClientSide()) {
             return;
         }
 
-        List<ItemStack> candidates = getMendingIIItems(player);
+        ExperienceOrb orb = event.getOrb();
+        int xp = orb.getValue();
 
+        if (xp <= 0) {
+            return;
+        }
+
+        Holder<net.minecraft.world.item.enchantment.Enchantment> mendingII =
+                player.registryAccess()
+                        .registryOrThrow(Registries.ENCHANTMENT)
+                        .getHolderOrThrow(MENDING_II);
+
+        List<ItemStack> candidates = new ArrayList<>();
+
+        // Currently held item.
+        ItemStack mainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
+
+        if (isValidTarget(mainHand, mendingII)) {
+            candidates.add(mainHand);
+        }
+
+        // Equipped armor.
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (!slot.isArmor()) {
+                continue;
+            }
+
+            ItemStack armor = player.getItemBySlot(slot);
+
+            if (isValidTarget(armor, mendingII)) {
+                candidates.add(armor);
+            }
+        }
+
+        // No Mending II item to repair.
         if (candidates.isEmpty()) {
             return;
         }
@@ -48,12 +80,6 @@ public class MendingIIHandler {
             return;
         }
 
-        int xp = orb.getValue();
-
-        if (xp <= 0) {
-            return;
-        }
-
         /*
          * Vanilla Mending:
          * 1 XP = 2 durability
@@ -61,76 +87,78 @@ public class MendingIIHandler {
          * Mending II:
          * 1 XP = 4 durability
          */
-        int repairPerXp = 4;
+        final int DURABILITY_PER_XP = 4;
 
-        int durabilityNeeded = target.getDamageValue();
+        int damage = target.getDamageValue();
 
-        if (durabilityNeeded <= 0) {
+        if (damage <= 0) {
             return;
         }
 
-        int maxRepair = xp * repairPerXp;
-        int actualRepair = Math.min(durabilityNeeded, maxRepair);
+        int possibleRepair = xp * DURABILITY_PER_XP;
+        int actualRepair = Math.min(damage, possibleRepair);
 
-        target.setDamageValue(target.getDamageValue() - actualRepair);
+        target.setDamageValue(damage - actualRepair);
 
         /*
-         * Work out how much XP was actually consumed.
-         *
-         * Example:
-         * 10 XP = 40 durability.
-         * If the item only needs 15 durability,
-         * only 4 XP is consumed and the remaining 6 XP
-         * goes to the player's normal XP.
+         * Calculate how much XP was actually needed.
          */
-        int xpUsed = (actualRepair + repairPerXp - 1) / repairPerXp;
+        int xpUsed =
+                (actualRepair + DURABILITY_PER_XP - 1)
+                        / DURABILITY_PER_XP;
+
+        xpUsed = Math.min(xpUsed, xp);
+
         int remainingXp = xp - xpUsed;
 
         /*
-         * Cancel normal XP pickup so vanilla Mending does not
-         * process the same orb a second time.
+         * Prevent vanilla from processing this XP orb.
          */
         event.setCanceled(true);
 
+        /*
+         * The orb has been consumed.
+         */
+        orb.discard();
+
+        /*
+         * Give any unused XP back to the player.
+         */
         if (remainingXp > 0) {
             player.giveExperiencePoints(remainingXp);
         }
-
-        orb.discard();
     }
 
-    private static List<ItemStack> getMendingIIItems(Player player) {
-        List<ItemStack> items = new ArrayList<>();
-
-        // Currently held item.
-        ItemStack mainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
-
-        if (hasMendingII(mainHand) && mainHand.isDamaged()) {
-            items.add(mainHand);
+    private static boolean isValidTarget(
+            ItemStack stack,
+            Holder<net.minecraft.world.item.enchantment.Enchantment> mendingII
+    ) {
+        if (stack.isEmpty()) {
+            return false;
         }
 
-        // Armor.
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (!slot.isArmor()) {
-                continue;
-            }
-
-            ItemStack armor = player.getItemBySlot(slot);
-
-            if (hasMendingII(armor) && armor.isDamaged()) {
-                items.add(armor);
-            }
+        if (!stack.isDamageableItem()) {
+            return false;
         }
 
-        return items;
+        if (!stack.isDamaged()) {
+            return false;
+        }
+
+        return EnchantmentHelper.getItemEnchantmentLevel(
+                mendingII,
+                stack
+        ) > 0;
     }
 
-    private static ItemStack findLowestDurability(List<ItemStack> items) {
+    private static ItemStack findLowestDurability(
+            List<ItemStack> candidates
+    ) {
         ItemStack best = ItemStack.EMPTY;
 
-        double lowestPercentage = Double.MAX_VALUE;
+        double lowestRemainingPercentage = Double.MAX_VALUE;
 
-        for (ItemStack stack : items) {
+        for (ItemStack stack : candidates) {
             int maxDamage = stack.getMaxDamage();
             int damage = stack.getDamageValue();
 
@@ -139,42 +167,23 @@ public class MendingIIHandler {
             }
 
             /*
-             * Convert damage into remaining durability percentage.
+             * Example:
              *
-             * 10% remaining = more damaged than 50% remaining.
+             * 1000 / 2000 remaining = 50%
+             * 100 / 500 remaining   = 20%
+             *
+             * The 20% item wins because it is in worse condition.
              */
             double remainingPercentage =
-                    (double) (maxDamage - damage) / maxDamage;
+                    (double) (maxDamage - damage)
+                            / (double) maxDamage;
 
-            if (remainingPercentage < lowestPercentage) {
-                lowestPercentage = remainingPercentage;
+            if (remainingPercentage < lowestRemainingPercentage) {
+                lowestRemainingPercentage = remainingPercentage;
                 best = stack;
             }
         }
 
         return best;
     }
-
-    private static boolean hasMendingII(ItemStack stack) {
-        if (stack.isEmpty()) {
-            return false;
-        }
-
-        ItemEnchantments enchantments =
-                stack.get(net.minecraft.core.component.DataComponents.ENCHANTMENTS);
-
-        if (enchantments == null) {
-            return false;
-        }
-
-        return enchantments.getLevel(MENDING_II_HOLDER) > 0;
-    }
-
-    private static Holder<Enchantment> MENDING_II_HOLDER;
-
-    public static void initialize(net.minecraft.core.RegistryAccess registryAccess) {
-        MENDING_II_HOLDER =
-                registryAccess.registryOrThrow(Registries.ENCHANTMENT)
-                        .getHolderOrThrow(MENDING_II);
-    }
-            }
+                          }
