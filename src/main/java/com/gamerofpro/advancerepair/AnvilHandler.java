@@ -16,9 +16,6 @@ import net.neoforged.neoforge.event.AnvilUpdateEvent;
 
 public class AnvilHandler {
 
-    public AnvilHandler() {
-    }
-
     @SubscribeEvent
     public static void onAnvilUpdate(AnvilUpdateEvent event) {
         if (!AdvanceRepairMod.MOD_ENABLED.get()) {
