@@ -39,7 +39,7 @@ public class AdvanceRepairMod {
                 (container, parentScreen) -> new ModConfigScreen(parentScreen)
         );
 
-        NeoForge.EVENT_BUS.register(new AnvilHandler());
+        NeoForge.EVENT_BUS.register(AnvilHandler.class);
         NeoForge.EVENT_BUS.register(new TooltipHandler());
     }
 }
