@@ -3,7 +3,7 @@
   "category": "misc",
   "pattern": [
     "DDD",
-    "MBM",
+    " M ",
     "LBL"
   ],
   "key": {
@@ -13,13 +13,13 @@
       "components": {
         "minecraft:enchantments": {
           "levels": {
-            "advancerepair:mending_ii": 1
+            "minecraft:mending": 1
           }
         }
       }
     },
-    "B": "minecraft:air",
-    "L": "minecraft:lapis_lazuli"
+    "L": "minecraft:lapis_lazuli",
+    "B": "minecraft:experience_bottle"
   },
   "result": {
     "id": "advancerepair:mending_ii_book",
