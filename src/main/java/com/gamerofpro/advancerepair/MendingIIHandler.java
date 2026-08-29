@@ -1,7 +1,6 @@
 package com.gamerofpro.advancerepair;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +8,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
@@ -37,10 +37,13 @@ public class MendingIIHandler {
             return;
         }
 
-        // Mending II is armor-only. Cancel the entire anvil operation when
-        // a Mending II enchanted book is used on anything that is not armor.
-        if (hasMendingII(right) && !isArmor(left)) {
+        // Mending II books are only allowed to apply to armor.
+        // Enchanted books use STORED_ENCHANTMENTS, so detect the stored
+        // enchantment through the crafting-enchantment helper rather than
+        // the normal item-enchantment component.
+        if (hasMendingIIBook(right) && !isArmor(left)) {
             event.setCanceled(true);
+            return;
         }
     }
 
@@ -77,7 +80,6 @@ public class MendingIIHandler {
             return;
         }
 
-        // Repair the armor with the lowest remaining durability percentage.
         ItemStack target = findLowestDurability(candidates);
 
         if (target.isEmpty()) {
@@ -115,18 +117,15 @@ public class MendingIIHandler {
         }
     }
 
-    private static boolean hasMendingII(ItemStack stack) {
-        if (stack.isEmpty() || stack.getItem() != net.minecraft.world.item.Items.ENCHANTED_BOOK) {
+    private static boolean hasMendingIIBook(ItemStack stack) {
+        if (stack.isEmpty() || !stack.is(Items.ENCHANTED_BOOK)) {
             return false;
         }
 
-        // Enchanted books store their enchantments in STORED_ENCHANTMENTS,
-        // not the normal ENCHANTMENTS component.
-        if (stack.get(DataComponents.STORED_ENCHANTMENTS) == null) {
-            return false;
-        }
-
-        return EnchantmentHelper.getItemEnchantmentLevel(MENDING_II, stack) > 0;
+        // For enchanted books, getEnchantmentsForCrafting reads the stored
+        // enchantments from the book's STORED_ENCHANTMENTS component.
+        var enchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack);
+        return enchantments.getLevel(MENDING_II) > 0;
     }
 
     private static boolean isArmor(ItemStack stack) {
@@ -153,10 +152,7 @@ public class MendingIIHandler {
             return false;
         }
 
-        return EnchantmentHelper.getItemEnchantmentLevel(
-                mendingII,
-                stack
-        ) > 0;
+        return stack.getEnchantmentLevel(mendingII) > 0;
     }
 
     private static ItemStack findLowestDurability(
