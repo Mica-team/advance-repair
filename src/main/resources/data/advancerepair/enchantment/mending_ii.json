@@ -2,8 +2,8 @@
   "description": {
     "translate": "enchantment.advancerepair.mending_ii"
   },
-  "supported_items": "#minecraft:enchantable/durability",
-  "primary_items": "#minecraft:enchantable/durability",
+  "supported_items": "#minecraft:enchantable/armor",
+  "primary_items": "#minecraft:enchantable/armor",
   "weight": 1,
   "max_level": 1,
   "min_cost": {
