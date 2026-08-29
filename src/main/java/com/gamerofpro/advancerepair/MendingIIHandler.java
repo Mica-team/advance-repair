@@ -39,8 +39,6 @@ public class MendingIIHandler {
 
         // Mending II is armor-only. Cancel the entire anvil operation when
         // a Mending II enchanted book is used on anything that is not armor.
-        // Cancelling is important here: simply setting an empty output still
-        // allows vanilla anvil processing to continue in NeoForge 1.21.1.
         if (hasMendingII(right) && !isArmor(left)) {
             event.setCanceled(true);
         }
@@ -118,16 +116,17 @@ public class MendingIIHandler {
     }
 
     private static boolean hasMendingII(ItemStack stack) {
-        if (stack.isEmpty()) {
+        if (stack.isEmpty() || stack.getItem() != net.minecraft.world.item.Items.ENCHANTED_BOOK) {
             return false;
         }
 
-        return stack.getItem() == net.minecraft.world.item.Items.ENCHANTED_BOOK
-                && stack.get(DataComponents.ENCHANTMENTS) != null
-                && EnchantmentHelper.getItemEnchantmentLevel(
-                        MENDING_II,
-                        stack
-                ) > 0;
+        // Enchanted books store their enchantments in STORED_ENCHANTMENTS,
+        // not the normal ENCHANTMENTS component.
+        if (stack.get(DataComponents.STORED_ENCHANTMENTS) == null) {
+            return false;
+        }
+
+        return EnchantmentHelper.getItemEnchantmentLevel(MENDING_II, stack) > 0;
     }
 
     private static boolean isArmor(ItemStack stack) {
