@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "DDD",
+    "MBM",
+    "LBL"
+  ],
+  "key": {
+    "D": "minecraft:diamond",
+    "M": {
+      "item": "minecraft:enchanted_book",
+      "components": {
+        "minecraft:enchantments": {
+          "levels": {
+            "advancerepair:mending_ii": 1
+          }
+        }
+      }
+    },
+    "B": "minecraft:air",
+    "L": "minecraft:lapis_lazuli"
+  },
+  "result": {
+    "id": "advancerepair:mending_ii_book",
+    "count": 1
+  }
+}
