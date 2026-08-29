@@ -4,7 +4,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +29,6 @@ public class MendingIIHandler {
     public static void onXpPickup(PlayerXpEvent.PickupXp event) {
         Player player = event.getEntity();
 
-        // Server only.
         if (player.level().isClientSide()) {
             return;
         }
@@ -49,44 +47,26 @@ public class MendingIIHandler {
 
         List<ItemStack> candidates = new ArrayList<>();
 
-        // Currently held item.
-        ItemStack mainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
-
-        if (isValidTarget(mainHand, mendingII)) {
-            candidates.add(mainHand);
-        }
-
-        // Equipped armor.
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (!slot.isArmor()) {
-                continue;
-            }
-
-            ItemStack armor = player.getItemBySlot(slot);
-
+        // Mending II only repairs equipped armor.
+        for (ItemStack armor : player.getArmorSlots()) {
             if (isValidTarget(armor, mendingII)) {
                 candidates.add(armor);
             }
         }
 
-        // No Mending II item to repair.
         if (candidates.isEmpty()) {
             return;
         }
 
+        // Repair the armor with the lowest remaining durability percentage.
         ItemStack target = findLowestDurability(candidates);
 
         if (target.isEmpty()) {
             return;
         }
 
-        /*
-         * Vanilla Mending:
-         * 1 XP = 2 durability
-         *
-         * Mending II:
-         * 1 XP = 4 durability
-         */
+        // Vanilla Mending: 1 XP = 2 durability.
+        // Mending II: 1 XP = 4 durability (2x Mending).
         final int DURABILITY_PER_XP = 4;
 
         int damage = target.getDamageValue();
@@ -100,9 +80,6 @@ public class MendingIIHandler {
 
         target.setDamageValue(damage - actualRepair);
 
-        /*
-         * Calculate how much XP was actually needed.
-         */
         int xpUsed =
                 (actualRepair + DURABILITY_PER_XP - 1)
                         / DURABILITY_PER_XP;
@@ -111,19 +88,9 @@ public class MendingIIHandler {
 
         int remainingXp = xp - xpUsed;
 
-        /*
-         * Prevent vanilla from processing this XP orb.
-         */
         event.setCanceled(true);
-
-        /*
-         * The orb has been consumed.
-         */
         orb.discard();
 
-        /*
-         * Give any unused XP back to the player.
-         */
         if (remainingXp > 0) {
             player.giveExperiencePoints(remainingXp);
         }
@@ -155,7 +122,6 @@ public class MendingIIHandler {
             List<ItemStack> candidates
     ) {
         ItemStack best = ItemStack.EMPTY;
-
         double lowestRemainingPercentage = Double.MAX_VALUE;
 
         for (ItemStack stack : candidates) {
@@ -166,14 +132,6 @@ public class MendingIIHandler {
                 continue;
             }
 
-            /*
-             * Example:
-             *
-             * 1000 / 2000 remaining = 50%
-             * 100 / 500 remaining   = 20%
-             *
-             * The 20% item wins because it is in worse condition.
-             */
             double remainingPercentage =
                     (double) (maxDamage - damage)
                             / (double) maxDamage;
@@ -186,4 +144,4 @@ public class MendingIIHandler {
 
         return best;
     }
-                          }
+}
