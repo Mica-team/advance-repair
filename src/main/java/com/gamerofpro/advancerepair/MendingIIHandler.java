@@ -37,12 +37,12 @@ public class MendingIIHandler {
             return;
         }
 
-        // Mending II is armor-only. Explicitly block the enchanted book
-        // from being applied to tools, weapons, or other non-armor items.
+        // Mending II is armor-only. Cancel the entire anvil operation when
+        // a Mending II enchanted book is used on anything that is not armor.
+        // Cancelling is important here: simply setting an empty output still
+        // allows vanilla anvil processing to continue in NeoForge 1.21.1.
         if (hasMendingII(right) && !isArmor(left)) {
-            event.setOutput(ItemStack.EMPTY);
-            event.setCost(0);
-            event.setMaterialCost(0);
+            event.setCanceled(true);
         }
     }
 
