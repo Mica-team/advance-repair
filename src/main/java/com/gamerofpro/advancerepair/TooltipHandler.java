@@ -19,12 +19,10 @@ import java.util.List;
 
 public class TooltipHandler {
 
-    public TooltipHandler() {
-    }
-
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event) {
-        if (!AdvanceRepairMod.MOD_ENABLED.get()) {
+        if (!AdvanceRepairMod.MOD_ENABLED.get()
+                || !AdvanceRepairMod.TOOLTIP.get()) {
             return;
         }
 
@@ -36,55 +34,43 @@ public class TooltipHandler {
 
         String itemNamespace = itemKey.getNamespace();
         String itemPath = itemKey.getPath().toLowerCase();
-
         String targetModId = AdvanceRepairMod.TARGET_MOD_ID.get();
+
+        if (stack.isDamageableItem() && stack.isDamaged()) {
+            int maxDamage = stack.getMaxDamage();
+            int damage = stack.getDamageValue();
+            int remaining = maxDamage - damage;
+
+            tooltip.add(Component.literal(
+                    "Durability: " + remaining + " / " + maxDamage)
+                    .withStyle(ChatFormatting.GRAY));
+        }
 
         if (targetModId.equalsIgnoreCase("minecraft")
                 && itemNamespace.equalsIgnoreCase("minecraft")) {
 
             if (isNetherite(stack)) {
-                tooltip.add(Component.literal("Repair with Diamond: 80%")
-                        .withStyle(ChatFormatting.GREEN));
-                tooltip.add(Component.literal("Repair with Iron: 50%")
-                        .withStyle(ChatFormatting.YELLOW));
-                tooltip.add(Component.literal("Repair with Gold: 40%")
-                        .withStyle(ChatFormatting.GOLD));
-                tooltip.add(Component.literal("Repair with Copper: 40%")
-                        .withStyle(ChatFormatting.GRAY));
-                tooltip.add(Component.literal("XP Cost: 5–12 levels")
-                        .withStyle(ChatFormatting.DARK_PURPLE));
-
+                addRepair(tooltip, "Repair with Diamond: 80%", ChatFormatting.GREEN);
+                addRepair(tooltip, "Repair with Iron: 50%", ChatFormatting.YELLOW);
+                addRepair(tooltip, "Repair with Gold: 40%", ChatFormatting.GOLD);
+                addRepair(tooltip, "Repair with Copper: 40%", ChatFormatting.GRAY);
+                addRepair(tooltip, "XP Cost: 5–12 levels", ChatFormatting.DARK_PURPLE);
             } else if (isDiamond(stack)) {
-                tooltip.add(Component.literal("Repair with Iron: 60%")
-                        .withStyle(ChatFormatting.YELLOW));
-                tooltip.add(Component.literal("Repair with Gold: 45%")
-                        .withStyle(ChatFormatting.GOLD));
-                tooltip.add(Component.literal("Repair with Copper: 40%")
-                        .withStyle(ChatFormatting.GRAY));
-                tooltip.add(Component.literal("XP Cost: 5–12 levels")
-                        .withStyle(ChatFormatting.DARK_PURPLE));
-
+                addRepair(tooltip, "Repair with Iron: 60%", ChatFormatting.YELLOW);
+                addRepair(tooltip, "Repair with Gold: 45%", ChatFormatting.GOLD);
+                addRepair(tooltip, "Repair with Copper: 40%", ChatFormatting.GRAY);
+                addRepair(tooltip, "XP Cost: 5–12 levels", ChatFormatting.DARK_PURPLE);
             } else if (isIron(stack)) {
-                tooltip.add(Component.literal("Repair with Gold: 70%")
-                        .withStyle(ChatFormatting.GOLD));
-                tooltip.add(Component.literal("Repair with Copper: 40%")
-                        .withStyle(ChatFormatting.GRAY));
-                tooltip.add(Component.literal("XP Cost: 5–12 levels")
-                        .withStyle(ChatFormatting.DARK_PURPLE));
-
+                addRepair(tooltip, "Repair with Gold: 70%", ChatFormatting.GOLD);
+                addRepair(tooltip, "Repair with Copper: 40%", ChatFormatting.GRAY);
+                addRepair(tooltip, "XP Cost: 5–12 levels", ChatFormatting.DARK_PURPLE);
             } else if (isLeather(stack)) {
-                tooltip.add(Component.literal("Repair with Leather: 100%")
-                        .withStyle(ChatFormatting.GREEN));
-                tooltip.add(Component.literal("XP Cost: 5–12 levels")
-                        .withStyle(ChatFormatting.DARK_PURPLE));
-
+                addRepair(tooltip, "Repair with Leather: 100%", ChatFormatting.GREEN);
+                addRepair(tooltip, "XP Cost: 5–12 levels", ChatFormatting.DARK_PURPLE);
             } else if (isChainmail(stack)) {
-                tooltip.add(Component.literal("Repair with Chain: 60%")
-                        .withStyle(ChatFormatting.GRAY));
-                tooltip.add(Component.literal("Repair with Iron: 50%")
-                        .withStyle(ChatFormatting.YELLOW));
-                tooltip.add(Component.literal("XP Cost: 5–12 levels")
-                        .withStyle(ChatFormatting.DARK_PURPLE));
+                addRepair(tooltip, "Repair with Chain: 60%", ChatFormatting.GRAY);
+                addRepair(tooltip, "Repair with Iron: 50%", ChatFormatting.YELLOW);
+                addRepair(tooltip, "XP Cost: 5–12 levels", ChatFormatting.DARK_PURPLE);
             }
 
             return;
@@ -96,7 +82,6 @@ public class TooltipHandler {
 
         String repairPercentageString = null;
         ChatFormatting color = ChatFormatting.GRAY;
-
         Object item = stack.getItem();
 
         if (item instanceof TieredItem tieredItem) {
@@ -115,7 +100,6 @@ public class TooltipHandler {
                 repairPercentageString = "40%";
                 color = ChatFormatting.GOLD;
             }
-
         } else if (item instanceof ArmorItem armorItem) {
             Holder<?> material = armorItem.getMaterial();
 
@@ -144,70 +128,59 @@ public class TooltipHandler {
             } else if (itemPath.contains("iron")) {
                 repairPercentageString = "60%";
                 color = ChatFormatting.WHITE;
-            } else if (itemPath.contains("gold")
-                    || itemPath.contains("copper")) {
+            } else if (itemPath.contains("gold") || itemPath.contains("copper")) {
                 repairPercentageString = "40%";
                 color = ChatFormatting.GOLD;
             }
         }
 
         if (repairPercentageString != null) {
-            tooltip.add(Component.literal(
-                    "Custom Mod Repair Value: " + repairPercentageString)
-                    .withStyle(color));
-
-            tooltip.add(Component.literal("XP Cost: 5–12 levels")
-                    .withStyle(ChatFormatting.DARK_PURPLE));
+            addRepair(tooltip,
+                    "Custom Mod Repair Value: " + repairPercentageString,
+                    color);
+            addRepair(tooltip, "XP Cost: 5–12 levels", ChatFormatting.DARK_PURPLE);
         }
     }
 
+    private static void addRepair(
+            List<Component> tooltip,
+            String text,
+            ChatFormatting color
+    ) {
+        tooltip.add(Component.literal(text).withStyle(color));
+    }
+
     private static boolean isNetherite(ItemStack stack) {
-        return stack.is(Items.NETHERITE_HELMET)
-                || stack.is(Items.NETHERITE_CHESTPLATE)
-                || stack.is(Items.NETHERITE_LEGGINGS)
-                || stack.is(Items.NETHERITE_BOOTS)
-                || stack.is(Items.NETHERITE_SWORD)
-                || stack.is(Items.NETHERITE_PICKAXE)
-                || stack.is(Items.NETHERITE_AXE)
-                || stack.is(Items.NETHERITE_SHOVEL)
+        return stack.is(Items.NETHERITE_HELMET) || stack.is(Items.NETHERITE_CHESTPLATE)
+                || stack.is(Items.NETHERITE_LEGGINGS) || stack.is(Items.NETHERITE_BOOTS)
+                || stack.is(Items.NETHERITE_SWORD) || stack.is(Items.NETHERITE_PICKAXE)
+                || stack.is(Items.NETHERITE_AXE) || stack.is(Items.NETHERITE_SHOVEL)
                 || stack.is(Items.NETHERITE_HOE);
     }
 
     private static boolean isDiamond(ItemStack stack) {
-        return stack.is(Items.DIAMOND_HELMET)
-                || stack.is(Items.DIAMOND_CHESTPLATE)
-                || stack.is(Items.DIAMOND_LEGGINGS)
-                || stack.is(Items.DIAMOND_BOOTS)
-                || stack.is(Items.DIAMOND_SWORD)
-                || stack.is(Items.DIAMOND_PICKAXE)
-                || stack.is(Items.DIAMOND_AXE)
-                || stack.is(Items.DIAMOND_SHOVEL)
+        return stack.is(Items.DIAMOND_HELMET) || stack.is(Items.DIAMOND_CHESTPLATE)
+                || stack.is(Items.DIAMOND_LEGGINGS) || stack.is(Items.DIAMOND_BOOTS)
+                || stack.is(Items.DIAMOND_SWORD) || stack.is(Items.DIAMOND_PICKAXE)
+                || stack.is(Items.DIAMOND_AXE) || stack.is(Items.DIAMOND_SHOVEL)
                 || stack.is(Items.DIAMOND_HOE);
     }
 
     private static boolean isIron(ItemStack stack) {
-        return stack.is(Items.IRON_HELMET)
-                || stack.is(Items.IRON_CHESTPLATE)
-                || stack.is(Items.IRON_LEGGINGS)
-                || stack.is(Items.IRON_BOOTS)
-                || stack.is(Items.IRON_SWORD)
-                || stack.is(Items.IRON_PICKAXE)
-                || stack.is(Items.IRON_AXE)
-                || stack.is(Items.IRON_SHOVEL)
+        return stack.is(Items.IRON_HELMET) || stack.is(Items.IRON_CHESTPLATE)
+                || stack.is(Items.IRON_LEGGINGS) || stack.is(Items.IRON_BOOTS)
+                || stack.is(Items.IRON_SWORD) || stack.is(Items.IRON_PICKAXE)
+                || stack.is(Items.IRON_AXE) || stack.is(Items.IRON_SHOVEL)
                 || stack.is(Items.IRON_HOE);
     }
 
     private static boolean isLeather(ItemStack stack) {
-        return stack.is(Items.LEATHER_HELMET)
-                || stack.is(Items.LEATHER_CHESTPLATE)
-                || stack.is(Items.LEATHER_LEGGINGS)
-                || stack.is(Items.LEATHER_BOOTS);
+        return stack.is(Items.LEATHER_HELMET) || stack.is(Items.LEATHER_CHESTPLATE)
+                || stack.is(Items.LEATHER_LEGGINGS) || stack.is(Items.LEATHER_BOOTS);
     }
 
     private static boolean isChainmail(ItemStack stack) {
-        return stack.is(Items.CHAINMAIL_HELMET)
-                || stack.is(Items.CHAINMAIL_CHESTPLATE)
-                || stack.is(Items.CHAINMAIL_LEGGINGS)
-                || stack.is(Items.CHAINMAIL_BOOTS);
+        return stack.is(Items.CHAINMAIL_HELMET) || stack.is(Items.CHAINMAIL_CHESTPLATE)
+                || stack.is(Items.CHAINMAIL_LEGGINGS) || stack.is(Items.CHAINMAIL_BOOTS);
     }
-                  }
+}
