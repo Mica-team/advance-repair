@@ -6,12 +6,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 
 import java.util.ArrayList;
@@ -27,25 +24,6 @@ public class MendingIIHandler {
                             "mending_ii"
                     )
             );
-
-    @SubscribeEvent
-    public static void onAnvilUpdate(AnvilUpdateEvent event) {
-        ItemStack left = event.getLeft();
-        ItemStack right = event.getRight();
-
-        if (left.isEmpty() || right.isEmpty()) {
-            return;
-        }
-
-        // Mending II books are only allowed to apply to armor.
-        // Enchanted books use STORED_ENCHANTMENTS, so detect the stored
-        // enchantment through the crafting-enchantment helper rather than
-        // the normal item-enchantment component.
-        if (hasMendingIIBook(right) && !isArmor(left)) {
-            event.setCanceled(true);
-            return;
-        }
-    }
 
     @SubscribeEvent
     public static void onXpPickup(PlayerXpEvent.PickupXp event) {
@@ -69,11 +47,22 @@ public class MendingIIHandler {
 
         List<ItemStack> candidates = new ArrayList<>();
 
-        // Mending II only repairs equipped armor.
+        // Check equipped armor first.
         for (ItemStack armor : player.getArmorSlots()) {
             if (isValidTarget(armor, mendingII)) {
                 candidates.add(armor);
             }
+        }
+
+        // Also check the item currently held in either hand.
+        ItemStack mainHand = player.getMainHandItem();
+        if (isValidTarget(mainHand, mendingII)) {
+            candidates.add(mainHand);
+        }
+
+        ItemStack offHand = player.getOffhandItem();
+        if (isValidTarget(offHand, mendingII)) {
+            candidates.add(offHand);
         }
 
         if (candidates.isEmpty()) {
@@ -87,11 +76,10 @@ public class MendingIIHandler {
         }
 
         // Vanilla Mending: 1 XP = 2 durability.
-        // Mending II: 1 XP = 4 durability (2x Mending).
+        // Mending II: 1 XP = 4 durability (2x normal Mending).
         final int DURABILITY_PER_XP = 4;
 
         int damage = target.getDamageValue();
-
         if (damage <= 0) {
             return;
         }
@@ -101,10 +89,7 @@ public class MendingIIHandler {
 
         target.setDamageValue(damage - actualRepair);
 
-        int xpUsed =
-                (actualRepair + DURABILITY_PER_XP - 1)
-                        / DURABILITY_PER_XP;
-
+        int xpUsed = (actualRepair + DURABILITY_PER_XP - 1) / DURABILITY_PER_XP;
         xpUsed = Math.min(xpUsed, xp);
 
         int remainingXp = xp - xpUsed;
@@ -117,21 +102,6 @@ public class MendingIIHandler {
         }
     }
 
-    private static boolean hasMendingIIBook(ItemStack stack) {
-        if (stack.isEmpty() || !stack.is(Items.ENCHANTED_BOOK)) {
-            return false;
-        }
-
-        // For enchanted books, getEnchantmentsForCrafting reads the stored
-        // enchantments from the book's STORED_ENCHANTMENTS component.
-        var enchantments = EnchantmentHelper.getEnchantmentsForCrafting(stack);
-        return enchantments.getLevel(MENDING_II) > 0;
-    }
-
-    private static boolean isArmor(ItemStack stack) {
-        return stack.getItem() instanceof ArmorItem;
-    }
-
     private static boolean isValidTarget(
             ItemStack stack,
             Holder<net.minecraft.world.item.enchantment.Enchantment> mendingII
@@ -140,24 +110,14 @@ public class MendingIIHandler {
             return false;
         }
 
-        if (!(stack.getItem() instanceof ArmorItem)) {
-            return false;
-        }
-
-        if (!stack.isDamageableItem()) {
-            return false;
-        }
-
-        if (!stack.isDamaged()) {
+        if (!stack.isDamageableItem() || !stack.isDamaged()) {
             return false;
         }
 
         return stack.getEnchantmentLevel(mendingII) > 0;
     }
 
-    private static ItemStack findLowestDurability(
-            List<ItemStack> candidates
-    ) {
+    private static ItemStack findLowestDurability(List<ItemStack> candidates) {
         ItemStack best = ItemStack.EMPTY;
         double lowestRemainingPercentage = Double.MAX_VALUE;
 
@@ -170,8 +130,7 @@ public class MendingIIHandler {
             }
 
             double remainingPercentage =
-                    (double) (maxDamage - damage)
-                            / (double) maxDamage;
+                    (double) (maxDamage - damage) / (double) maxDamage;
 
             if (remainingPercentage < lowestRemainingPercentage) {
                 lowestRemainingPercentage = remainingPercentage;
