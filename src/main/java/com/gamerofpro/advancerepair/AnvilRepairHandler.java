@@ -12,7 +12,8 @@ public class AnvilRepairHandler {
 
     @SubscribeEvent
     public static void onRightClickAnvil(PlayerInteractEvent.RightClickBlock event) {
-        if (!AdvanceRepairMod.MOD_ENABLED.get()) {
+        if (!AdvanceRepairMod.MOD_ENABLED.get()
+                || !AdvanceRepairMod.QUALITY_OF_LIFE.get()) {
             return;
         }
 
@@ -34,8 +35,6 @@ public class AnvilRepairHandler {
 
         int damage = state.getValue(AnvilBlock.DAMAGE);
 
-        // 0 = normal, 1 = chipped, 2 = damaged.
-        // Each iron block repairs exactly one stage.
         if (damage <= 0) {
             return;
         }
