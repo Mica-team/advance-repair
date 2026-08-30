@@ -16,6 +16,8 @@ public class AdvanceRepairMod {
     public static final ModConfigSpec SPEC;
     public static final ModConfigSpec.ConfigValue<Boolean> MOD_ENABLED;
     public static final ModConfigSpec.ConfigValue<String> TARGET_MOD_ID;
+    public static final ModConfigSpec.ConfigValue<Boolean> QUALITY_OF_LIFE;
+    public static final ModConfigSpec.ConfigValue<Boolean> TOOLTIP;
 
     static {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
@@ -24,6 +26,14 @@ public class AdvanceRepairMod {
 
         MOD_ENABLED = builder.define("modEnabled", true);
         TARGET_MOD_ID = builder.define("targetModId", "minecraft");
+
+        builder.push("Quality of Life");
+        QUALITY_OF_LIFE = builder.define("enabled", true);
+        builder.pop();
+
+        builder.push("Tooltip");
+        TOOLTIP = builder.define("enabled", true);
+        builder.pop();
 
         builder.pop();
 
