@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 
@@ -27,6 +26,11 @@ public class MendingIIHandler {
 
     @SubscribeEvent
     public static void onXpPickup(PlayerXpEvent.PickupXp event) {
+        if (!AdvanceRepairMod.MOD_ENABLED.get()
+                || !AdvanceRepairMod.QUALITY_OF_LIFE.get()) {
+            return;
+        }
+
         Player player = event.getEntity();
 
         if (player.level().isClientSide()) {
@@ -47,14 +51,12 @@ public class MendingIIHandler {
 
         List<ItemStack> candidates = new ArrayList<>();
 
-        // Check equipped armor first.
         for (ItemStack armor : player.getArmorSlots()) {
             if (isValidTarget(armor, mendingII)) {
                 candidates.add(armor);
             }
         }
 
-        // Also check the item currently held in either hand.
         ItemStack mainHand = player.getMainHandItem();
         if (isValidTarget(mainHand, mendingII)) {
             candidates.add(mainHand);
@@ -75,11 +77,9 @@ public class MendingIIHandler {
             return;
         }
 
-        // Vanilla Mending: 1 XP = 2 durability.
-        // Mending II: 1 XP = 4 durability (2x normal Mending).
         final int DURABILITY_PER_XP = 4;
-
         int damage = target.getDamageValue();
+
         if (damage <= 0) {
             return;
         }
