@@ -59,5 +59,6 @@ public class AdvanceRepairMod {
         NeoForge.EVENT_BUS.register(AnvilRepairHandler.class);
         NeoForge.EVENT_BUS.register(TooltipHandler.class);
         NeoForge.EVENT_BUS.register(MendingIIHandler.class);
+        NeoForge.EVENT_BUS.register(WelcomeBookHandler.class);
     }
 }
