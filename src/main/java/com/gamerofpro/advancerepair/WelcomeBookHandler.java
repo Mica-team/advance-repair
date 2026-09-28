@@ -72,7 +72,13 @@ public class WelcomeBookHandler {
                 )
                 .append(
                         Component.literal(
-                                "\n\nSomething isn't quite right..."
+                                "\n\nSomething isn't quite right...\n\n"
+                                        + "Don't close this book yet.\n\n"
+                                        + "It's already too late.\n\n"
+                                        + "We weren't supposed to leave this page here.\n\n"
+                                        + "If you can read this,\n"
+                                        + "then HR knows you're here.\n\n"
+                                        + "...and HR isn't the only one watching."
                         )
                         .withStyle(ChatFormatting.DARK_RED)
                 );
