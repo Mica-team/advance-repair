@@ -1,5 +1,5 @@
 {
-  "parent": "advancerepair:root",
+  "parent": "advancerepair:first_repair",
   "display": {
     "icon": {
       "id": "minecraft:enchanted_book"
