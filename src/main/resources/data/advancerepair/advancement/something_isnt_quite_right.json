@@ -1,0 +1,26 @@
+{
+  "parent": "advancerepair:root",
+  "display": {
+    "icon": {
+      "id": "minecraft:enchanted_book"
+    },
+    "title": {
+      "text": "Something Isn't Quite Right..."
+    },
+    "description": {
+      "text": "Craft the Mending II book with a note from HR."
+    },
+    "frame": "TASK",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "craft_hr_mending_note": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "advancerepair:hr_mending_note"
+      }
+    }
+  }
+}
