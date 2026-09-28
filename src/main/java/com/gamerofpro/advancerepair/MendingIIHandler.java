@@ -7,15 +7,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MendingIIHandler {
 
-    private static final ResourceKey<net.minecraft.world.item.enchantment.Enchantment> MENDING_II =
+    private static final ResourceKey<Enchantment> MENDING_II =
             ResourceKey.create(
                     Registries.ENCHANTMENT,
                     ResourceLocation.fromNamespaceAndPath(
@@ -44,34 +42,12 @@ public class MendingIIHandler {
             return;
         }
 
-        Holder<net.minecraft.world.item.enchantment.Enchantment> mendingII =
+        Holder<Enchantment> mendingII =
                 player.registryAccess()
                         .registryOrThrow(Registries.ENCHANTMENT)
                         .getHolderOrThrow(MENDING_II);
 
-        List<ItemStack> candidates = new ArrayList<>();
-
-        for (ItemStack armor : player.getArmorSlots()) {
-            if (isValidTarget(armor, mendingII)) {
-                candidates.add(armor);
-            }
-        }
-
-        ItemStack mainHand = player.getMainHandItem();
-        if (isValidTarget(mainHand, mendingII)) {
-            candidates.add(mainHand);
-        }
-
-        ItemStack offHand = player.getOffhandItem();
-        if (isValidTarget(offHand, mendingII)) {
-            candidates.add(offHand);
-        }
-
-        if (candidates.isEmpty()) {
-            return;
-        }
-
-        ItemStack target = findLowestDurability(candidates);
+        ItemStack target = findLowestDurabilityTarget(player, mendingII);
 
         if (target.isEmpty()) {
             return;
@@ -102,42 +78,64 @@ public class MendingIIHandler {
         }
     }
 
-    private static boolean isValidTarget(
-            ItemStack stack,
-            Holder<net.minecraft.world.item.enchantment.Enchantment> mendingII
+    private static ItemStack findLowestDurabilityTarget(
+            Player player,
+            Holder<Enchantment> mendingII
     ) {
-        if (stack.isEmpty()) {
-            return false;
-        }
-
-        if (!stack.isDamageableItem() || !stack.isDamaged()) {
-            return false;
-        }
-
-        return stack.getEnchantmentLevel(mendingII) > 0;
-    }
-
-    private static ItemStack findLowestDurability(List<ItemStack> candidates) {
         ItemStack best = ItemStack.EMPTY;
         double lowestRemainingPercentage = Double.MAX_VALUE;
 
-        for (ItemStack stack : candidates) {
-            int maxDamage = stack.getMaxDamage();
-            int damage = stack.getDamageValue();
-
-            if (maxDamage <= 0 || damage <= 0) {
-                continue;
-            }
-
-            double remainingPercentage =
-                    (double) (maxDamage - damage) / (double) maxDamage;
-
-            if (remainingPercentage < lowestRemainingPercentage) {
-                lowestRemainingPercentage = remainingPercentage;
-                best = stack;
+        for (ItemStack armor : player.getArmorSlots()) {
+            if (isBetterTarget(armor, mendingII, lowestRemainingPercentage)) {
+                best = armor;
+                lowestRemainingPercentage = remainingPercentage(armor);
             }
         }
 
+        ItemStack mainHand = player.getMainHandItem();
+        if (isBetterTarget(mainHand, mendingII, lowestRemainingPercentage)) {
+            best = mainHand;
+            lowestRemainingPercentage = remainingPercentage(mainHand);
+        }
+
+        ItemStack offHand = player.getOffhandItem();
+        if (isBetterTarget(offHand, mendingII, lowestRemainingPercentage)) {
+            best = offHand;
+        }
+
         return best;
+    }
+
+    private static boolean isBetterTarget(
+            ItemStack stack,
+            Holder<Enchantment> mendingII,
+            double currentLowestPercentage
+    ) {
+        if (!isValidTarget(stack, mendingII)) {
+            return false;
+        }
+
+        return remainingPercentage(stack) < currentLowestPercentage;
+    }
+
+    private static boolean isValidTarget(
+            ItemStack stack,
+            Holder<Enchantment> mendingII
+    ) {
+        return !stack.isEmpty()
+                && stack.isDamageableItem()
+                && stack.isDamaged()
+                && stack.getEnchantmentLevel(mendingII) > 0;
+    }
+
+    private static double remainingPercentage(ItemStack stack) {
+        int maxDamage = stack.getMaxDamage();
+        int damage = stack.getDamageValue();
+
+        if (maxDamage <= 0 || damage <= 0) {
+            return Double.MAX_VALUE;
+        }
+
+        return (double) (maxDamage - damage) / (double) maxDamage;
     }
 }
