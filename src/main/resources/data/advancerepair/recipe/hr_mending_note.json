@@ -12,9 +12,11 @@
           }
         }
       },
-      "strict": true
+      "strict": false
     },
-    "minecraft:book"
+    {
+      "item": "minecraft:book"
+    }
   ],
   "result": {
     "id": "minecraft:enchanted_book",
@@ -24,14 +26,7 @@
         "levels": {
           "advancerepair:mending_ii": 1
         }
-      },
-      "minecraft:lore": [
-        {
-          "text": "From HR",
-          "color": "dark_red",
-          "italic": false
-        }
-      ]
+      }
     }
   }
 }
