@@ -3,7 +3,6 @@ package com.gamerofpro.advancerepair;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.AnvilBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -29,21 +28,21 @@ public class AnvilRepairHandler {
         var pos = event.getPos();
         var state = level.getBlockState(pos);
 
-        if (!state.is(Blocks.ANVIL)) {
+        var repairedBlock = state.is(Blocks.DAMAGED_ANVIL)
+                ? Blocks.CHIPPED_ANVIL
+                : state.is(Blocks.CHIPPED_ANVIL)
+                        ? Blocks.ANVIL
+                        : null;
+
+        if (repairedBlock == null) {
             return;
         }
 
-        int damage = state.getValue(AnvilBlock.DAMAGE);
-
-        if (damage <= 0) {
-            return;
-        }
-
-        level.setBlock(
-                pos,
-                state.setValue(AnvilBlock.DAMAGE, damage - 1),
-                3
-        );
+        level.setBlock(pos, repairedBlock.defaultBlockState()
+                .setValue(
+                        net.minecraft.world.level.block.AnvilBlock.FACING,
+                        state.getValue(net.minecraft.world.level.block.AnvilBlock.FACING)
+                ), 3);
 
         ItemStack held = event.getItemStack();
         held.shrink(1);
