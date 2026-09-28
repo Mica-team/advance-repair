@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:anvil"
+    },
+    "title": {
+      "text": "First Repair"
+    },
+    "description": {
+      "text": "Perform your first Advance Repair."
+    },
+    "frame": "TASK",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:story/root",
+  "criteria": {
+    "repair": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "repair"
+    ]
+  ],
+  "rewards": {
+    "loot": [
+      "advancerepair:rewards/first_repair"
+    ]
+  }
+}
