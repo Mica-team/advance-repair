@@ -34,7 +34,7 @@ jobs:
           path: build/libs/*.jar
 
       - name: Upload JAR to GitHub pre-release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/neoforge-1.21.1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release upload Pre-release build/libs/*.jar --clobber
