@@ -1,0 +1,22 @@
+{
+  "enchantment.advancerepair.mending_ii": "Reparación II",
+  "item.advancerepair.mending_ii_book": "Libro encantado de Reparación II",
+  "advancerepair.mending_ii.description": "Repara el objeto elegible más dañado de tu inventario al doble de la velocidad normal.",
+  "advancerepair.config.title": "Configuración de Advance Repair",
+  "advancerepair.config.mod_status": "Estado del mod",
+  "advancerepair.config.quality_of_life": "Calidad de vida",
+  "advancerepair.config.tooltip": "Información emergente",
+  "advancerepair.config.mod_id": "ID del mod",
+  "advancerepair.config.save_exit": "Guardar y salir",
+  "advancerepair.config.target_namespace": "Espacio de nombres del ID del mod objetivo:",
+  "advancerepair.config.invalid_id": "¡ID de mod no válido o no cargado!",
+  "advancerepair.config.valid_namespace": "Espacio de nombres cargado y válido",
+  "advancerepair.advancement.first_repair": "Primera reparación",
+  "advancerepair.advancement.first_repair.desc": "Realiza tu primera reparación con Advance Repair.",
+  "advancerepair.advancement.not_right": "Algo no está del todo bien...",
+  "advancerepair.advancement.not_right.desc": "Crea el libro de Reparación II con una nota de HR.",
+  "advancerepair.book.title": "Un mensaje de HR",
+  "advancerepair.book.page1": "Estimado jugador:\n\nHa pasado tiempo desde la última actualización de Advance Repair.\n\nNo nos hemos olvidado del mod.",
+  "advancerepair.book.page2": "Trabajamos en nuevas ideas y mejoras.\n\nGracias por seguir jugando.\n\nPerdón por la larga espera.\n\n— HR",
+  "advancerepair.book.page3": "Psst...\n\nHas encontrado un huevo de Pascua.\n\nO quizá...\nel juego te ha encontrado a ti.\n\nAlgo no está del todo bien...\n\nNo cierres este libro todavía.\n\nYa es demasiado tarde.\n\nNo debíamos dejar esta página aquí.\n\nSi puedes leer esto,\nHR sabe que estás aquí.\n\n...y no es el único que observa."
+}
