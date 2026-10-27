@@ -1,14 +1,8 @@
 {
   "display": {
-    "icon": {
-      "id": "minecraft:anvil"
-    },
-    "title": {
-      "text": "First Repair"
-    },
-    "description": {
-      "text": "Perform your first Advance Repair."
-    },
+    "icon": { "id": "minecraft:anvil" },
+    "title": { "translate": "advancerepair.advancement.first_repair" },
+    "description": { "translate": "advancerepair.advancement.first_repair.desc" },
     "frame": "TASK",
     "show_toast": true,
     "announce_to_chat": true,
@@ -16,18 +10,8 @@
   },
   "parent": "minecraft:story/root",
   "criteria": {
-    "repair": {
-      "trigger": "minecraft:impossible"
-    }
+    "repair": { "trigger": "minecraft:impossible" }
   },
-  "requirements": [
-    [
-      "repair"
-    ]
-  ],
-  "rewards": {
-    "loot": [
-      "advancerepair:rewards/first_repair"
-    ]
-  }
+  "requirements": [["repair"]],
+  "rewards": { "loot": ["advancerepair:rewards/first_repair"] }
 }
