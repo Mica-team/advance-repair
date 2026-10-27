@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[1,)"
-license="ARR"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
 
 [[mods]]
-modId="advancerepair"
-version="1.3"
-displayName="Advance Repair"
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
 logoFile="logo.png"
 authors="Gamerofpro"
 description='''
@@ -19,16 +19,16 @@ Advance Repair is a gameplay-focused mod that improves how repairing works in an
 Designed to make survival gameplay more flexible and less grindy while staying balanced.
 '''
 
-[[dependencies.advancerepair]]
+[[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"
-versionRange="[21,)"
+versionRange="${neoforge_version_range}"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.advancerepair]]
+[[dependencies.${mod_id}]]
 modId="minecraft"
 type="required"
-versionRange="[1.21.1]"
+versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
