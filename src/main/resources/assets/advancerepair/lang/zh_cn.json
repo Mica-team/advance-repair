@@ -1,0 +1,22 @@
+{
+  "enchantment.advancerepair.mending_ii": "经验修补 II",
+  "item.advancerepair.mending_ii_book": "经验修补 II 附魔书",
+  "advancerepair.mending_ii.description": "以普通经验修补两倍的速度修复物品栏中损坏最严重的适用物品。",
+  "advancerepair.config.title": "Advance Repair 配置",
+  "advancerepair.config.mod_status": "模组状态",
+  "advancerepair.config.quality_of_life": "生活质量",
+  "advancerepair.config.tooltip": "提示信息",
+  "advancerepair.config.mod_id": "模组 ID",
+  "advancerepair.config.save_exit": "保存并退出",
+  "advancerepair.config.target_namespace": "目标模组 ID 命名空间：",
+  "advancerepair.config.invalid_id": "模组 ID 无效或未加载！",
+  "advancerepair.config.valid_namespace": "有效的已加载命名空间",
+  "advancerepair.advancement.first_repair": "首次修复",
+  "advancerepair.advancement.first_repair.desc": "完成你的第一次 Advance Repair 修复。",
+  "advancerepair.advancement.not_right": "有些不太对劲……",
+  "advancerepair.advancement.not_right.desc": "制作一本带有 HR 留言的经验修补 II 附魔书。",
+  "advancerepair.book.title": "来自 HR 的消息",
+  "advancerepair.book.page1": "亲爱的玩家：\n\n我们知道 Advance Repair 已经有一段时间没有更新了。\n\n我们没有忘记这个模组。",
+  "advancerepair.book.page2": "我们一直在幕后构思新点子并改进模组。\n\n感谢你继续游玩。\n\n很抱歉让你等了这么久。\n\n— HR",
+  "advancerepair.book.page3": "嘘……\n\n你发现了一个彩蛋。\n\n或者……\n是游戏找到了你。\n\n有些不太对劲……\n\n先别合上这本书。\n\n已经太迟了。\n\n我们本不该把这一页留在这里。\n\n如果你能读到这些内容，\nHR 就知道你在这里。\n\n……而且不止 HR 在注视着你。"
+}
