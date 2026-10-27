@@ -1,0 +1,22 @@
+{
+  "enchantment.advancerepair.mending_ii": "Raccommodage II",
+  "item.advancerepair.mending_ii_book": "Livre enchanté de Raccommodage II",
+  "advancerepair.mending_ii.description": "Répare l’objet admissible le plus endommagé de l’inventaire deux fois plus vite que Raccommodage normal.",
+  "advancerepair.config.title": "Configuration d’Advance Repair",
+  "advancerepair.config.mod_status": "État du mod",
+  "advancerepair.config.quality_of_life": "Confort de jeu",
+  "advancerepair.config.tooltip": "Info-bulle",
+  "advancerepair.config.mod_id": "ID du mod",
+  "advancerepair.config.save_exit": "Enregistrer et quitter",
+  "advancerepair.config.target_namespace": "Espace de noms de l’ID du mod cible :",
+  "advancerepair.config.invalid_id": "ID de mod invalide ou non chargé !",
+  "advancerepair.config.valid_namespace": "Espace de noms chargé et valide",
+  "advancerepair.advancement.first_repair": "Première réparation",
+  "advancerepair.advancement.first_repair.desc": "Effectuez votre première réparation avec Advance Repair.",
+  "advancerepair.advancement.not_right": "Quelque chose cloche...",
+  "advancerepair.advancement.not_right.desc": "Fabriquez le livre Raccommodage II avec une note de HR.",
+  "advancerepair.book.title": "Un message de HR",
+  "advancerepair.book.page1": "Cher joueur,\n\nCela fait longtemps que Advance Repair n’a pas été mis à jour.\n\nNous n’avons pas oublié le mod.",
+  "advancerepair.book.page2": "Nous travaillons sur de nouvelles idées et améliorations.\n\nMerci de continuer à jouer.\n\nDésolés pour cette longue attente.\n\n— HR",
+  "advancerepair.book.page3": "Psst...\n\nVous avez trouvé un œuf de Pâques.\n\nOu peut-être...\nle jeu vous a trouvé.\n\nQuelque chose cloche...\n\nNe fermez pas encore ce livre.\n\nIl est déjà trop tard.\n\nCette page n’aurait pas dû être ici.\n\nSi vous pouvez lire ceci,\nHR sait que vous êtes là.\n\n...et HR n’est pas le seul à vous observer."
+}
