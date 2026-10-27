@@ -1,5 +1,22 @@
 {
   "enchantment.advancerepair.mending_ii": "Mending II",
   "item.advancerepair.mending_ii_book": "Mending II Enchanted Book",
-  "advancerepair.mending_ii.description": "Repairs the most damaged eligible item in your inventory at twice the normal Mending rate."
+  "advancerepair.mending_ii.description": "Repairs the most damaged eligible item in your inventory at twice the normal Mending rate.",
+  "advancerepair.config.title": "Advance Repair Configuration",
+  "advancerepair.config.mod_status": "Mod Status",
+  "advancerepair.config.quality_of_life": "Quality of Life",
+  "advancerepair.config.tooltip": "Tooltip",
+  "advancerepair.config.mod_id": "Mod ID",
+  "advancerepair.config.save_exit": "Save & Exit",
+  "advancerepair.config.target_namespace": "Target Mod ID Namespace:",
+  "advancerepair.config.invalid_id": "Invalid or Unloaded Mod ID!",
+  "advancerepair.config.valid_namespace": "Valid Loaded Namespace",
+  "advancerepair.advancement.first_repair": "First Repair",
+  "advancerepair.advancement.first_repair.desc": "Perform your first Advance Repair.",
+  "advancerepair.advancement.not_right": "Something Isn't Quite Right...",
+  "advancerepair.advancement.not_right.desc": "Craft the Mending II book with a note from HR.",
+  "advancerepair.book.title": "A Message from HR",
+  "advancerepair.book.page1": "Dear player,\n\nWe know it has been a while since Advance Repair received an update.\n\nWe haven't forgotten about the mod.",
+  "advancerepair.book.page2": "We've been working behind the scenes on new ideas and improvements.\n\nThank you for still playing.\n\nWe are sorry for the long wait.\n\n— HR",
+  "advancerepair.book.page3": "Psst...\n\nYou found an Easter Egg.\n\nOr maybe...\nthe game found you.\n\nSomething isn't quite right...\n\nDon't close this book yet.\n\nIt's already too late.\n\nWe weren't supposed to leave this page here.\n\nIf you can read this,\nthen HR knows you're here.\n\n...and HR isn't the only one watching."
 }
