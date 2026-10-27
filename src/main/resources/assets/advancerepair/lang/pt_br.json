@@ -1,0 +1,22 @@
+{
+  "enchantment.advancerepair.mending_ii": "Remendo II",
+  "item.advancerepair.mending_ii_book": "Livro encantado de Remendo II",
+  "advancerepair.mending_ii.description": "Repara o item elegível mais danificado do inventário com o dobro da velocidade do Remendo normal.",
+  "advancerepair.config.title": "Configuração do Advance Repair",
+  "advancerepair.config.mod_status": "Status do mod",
+  "advancerepair.config.quality_of_life": "Qualidade de vida",
+  "advancerepair.config.tooltip": "Dica de ferramenta",
+  "advancerepair.config.mod_id": "ID do mod",
+  "advancerepair.config.save_exit": "Salvar e sair",
+  "advancerepair.config.target_namespace": "Namespace do ID do mod-alvo:",
+  "advancerepair.config.invalid_id": "ID de mod inválido ou não carregado!",
+  "advancerepair.config.valid_namespace": "Namespace carregado e válido",
+  "advancerepair.advancement.first_repair": "Primeiro reparo",
+  "advancerepair.advancement.first_repair.desc": "Faça seu primeiro reparo com Advance Repair.",
+  "advancerepair.advancement.not_right": "Algo não está certo...",
+  "advancerepair.advancement.not_right.desc": "Crie o livro de Remendo II com uma nota da HR.",
+  "advancerepair.book.title": "Uma mensagem da HR",
+  "advancerepair.book.page1": "Caro jogador,\n\nFaz um tempo desde a última atualização do Advance Repair.\n\nNão nos esquecemos do mod.",
+  "advancerepair.book.page2": "Estamos trabalhando em novas ideias e melhorias.\n\nObrigado por continuar jogando.\n\nDesculpe pela longa espera.\n\n— HR",
+  "advancerepair.book.page3": "Psiu...\n\nVocê encontrou um easter egg.\n\nOu talvez...\no jogo tenha encontrado você.\n\nAlgo não está certo...\n\nNão feche este livro ainda.\n\nJá é tarde demais.\n\nNão deveríamos ter deixado esta página aqui.\n\nSe consegue ler isto,\na HR sabe que você está aqui.\n\n...e não é a única pessoa observando."
+}
