@@ -1,0 +1,22 @@
+{
+  "enchantment.advancerepair.mending_ii": "मेंडिंग II",
+  "item.advancerepair.mending_ii_book": "मेंडिंग II जादुई पुस्तक",
+  "advancerepair.mending_ii.description": "सूची में सबसे अधिक क्षतिग्रस्त योग्य वस्तु की मरम्मत सामान्य मेंडिंग की दोगुनी दर से करता है।",
+  "advancerepair.config.title": "एडवांस रिपेयर कॉन्फ़िगरेशन",
+  "advancerepair.config.mod_status": "मॉड स्थिति",
+  "advancerepair.config.quality_of_life": "जीवन गुणवत्ता",
+  "advancerepair.config.tooltip": "टूलटिप",
+  "advancerepair.config.mod_id": "मॉड ID",
+  "advancerepair.config.save_exit": "सहेजें और बाहर निकलें",
+  "advancerepair.config.target_namespace": "लक्ष्य मॉड ID नेमस्पेस:",
+  "advancerepair.config.invalid_id": "अमान्य या लोड न हुआ मॉड ID!",
+  "advancerepair.config.valid_namespace": "मान्य लोड किया गया नेमस्पेस",
+  "advancerepair.advancement.first_repair": "पहली मरम्मत",
+  "advancerepair.advancement.first_repair.desc": "अपनी पहली Advance Repair करें।",
+  "advancerepair.advancement.not_right": "कुछ ठीक नहीं है...",
+  "advancerepair.advancement.not_right.desc": "HR के नोट वाली Mending II पुस्तक बनाएँ।",
+  "advancerepair.book.title": "HR का संदेश",
+  "advancerepair.book.page1": "प्रिय खिलाड़ी,\n\nहम जानते हैं कि Advance Repair को अपडेट मिले काफी समय हो गया है।\n\nहमने मॉड को नहीं भुलाया है।",
+  "advancerepair.book.page2": "हम नए विचारों और सुधारों पर काम कर रहे हैं।\n\nखेलते रहने के लिए धन्यवाद।\n\nलंबे इंतज़ार के लिए क्षमा करें।\n\n— HR",
+  "advancerepair.book.page3": "फुस्स...\n\nआपको एक ईस्टर एग मिला।\n\nया शायद...\nखेल ने आपको ढूँढ लिया।\n\nकुछ ठीक नहीं है...\n\nअभी यह किताब बंद मत करें।\n\nअब बहुत देर हो चुकी है।\n\nयह पृष्ठ यहाँ नहीं होना चाहिए था।\n\nअगर आप इसे पढ़ सकते हैं,\nतो HR जानता है कि आप यहाँ हैं।\n\n...और केवल HR ही नहीं देख रहा।"
+}
