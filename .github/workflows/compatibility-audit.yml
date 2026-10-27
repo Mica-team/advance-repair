@@ -1,0 +1,123 @@
+name: NeoForge 1.21.x compatibility audit
+
+on:
+  push:
+    branches: [neoforge-1.21.1]
+    paths:
+      - '**/*.java'
+      - 'src/main/resources/**'
+      - 'build.gradle'
+      - 'gradle.properties'
+      - 'gradle/**'
+      - '.github/workflows/compatibility-audit.yml'
+  pull_request:
+    paths:
+      - '**/*.java'
+      - 'src/main/resources/**'
+      - 'build.gradle'
+      - 'gradle.properties'
+      - 'gradle/**'
+      - '.github/workflows/compatibility-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    name: MC ${{ matrix.minecraft }} / NeoForge ${{ matrix.neoforge }}
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - minecraft: '1.21'
+            neoforge: '21.0.167'
+            minecraft_range: '[1.21]'
+            neoforge_range: '[21.0,)'
+            experimental: true
+          - minecraft: '1.21.1'
+            neoforge: '21.1.264'
+            minecraft_range: '[1.21.1]'
+            neoforge_range: '[21.1,)'
+            experimental: false
+          - minecraft: '1.21.2'
+            neoforge: '21.2.1-beta'
+            minecraft_range: '[1.21.2]'
+            neoforge_range: '[21.2,)'
+            experimental: true
+          - minecraft: '1.21.3'
+            neoforge: '21.3.97'
+            minecraft_range: '[1.21.3]'
+            neoforge_range: '[21.3,)'
+            experimental: true
+          - minecraft: '1.21.4'
+            neoforge: '21.4.161'
+            minecraft_range: '[1.21.4]'
+            neoforge_range: '[21.4,)'
+            experimental: true
+          - minecraft: '1.21.5'
+            neoforge: '21.5.101'
+            minecraft_range: '[1.21.5]'
+            neoforge_range: '[21.5,)'
+            experimental: true
+          - minecraft: '1.21.6'
+            neoforge: '21.6.20-beta'
+            minecraft_range: '[1.21.6]'
+            neoforge_range: '[21.6,)'
+            experimental: true
+          - minecraft: '1.21.7'
+            neoforge: '21.7.25-beta'
+            minecraft_range: '[1.21.7]'
+            neoforge_range: '[21.7,)'
+            experimental: true
+          - minecraft: '1.21.8'
+            neoforge: '21.8.57'
+            minecraft_range: '[1.21.8]'
+            neoforge_range: '[21.8,)'
+            experimental: true
+          - minecraft: '1.21.9'
+            neoforge: '21.9.16-beta'
+            minecraft_range: '[1.21.9]'
+            neoforge_range: '[21.9,)'
+            experimental: true
+          - minecraft: '1.21.10'
+            neoforge: '21.10.63'
+            minecraft_range: '[1.21.10]'
+            neoforge_range: '[21.10,)'
+            experimental: true
+          - minecraft: '1.21.11'
+            neoforge: '21.11.48'
+            minecraft_range: '[1.21.11]'
+            neoforge_range: '[21.11,)'
+            experimental: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Compile and package this target
+        run: >-
+          ./gradlew --no-daemon clean build
+          -Pminecraft_version='${{ matrix.minecraft }}'
+          -Pneo_version='${{ matrix.neoforge }}'
+          -Pminecraft_version_range='${{ matrix.minecraft_range }}'
+          -Pneoforge_version_range='${{ matrix.neoforge_range }}'
+
+      - name: Upload compatible-target artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: advancerepair-neoforge-${{ matrix.minecraft }}
+          path: build/libs/advancerepair-neoforge-${{ matrix.minecraft }}.jar
+          if-no-files-found: error
