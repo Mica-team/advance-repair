@@ -1,0 +1,22 @@
+{
+  "enchantment.advancerepair.mending_ii": "修繕 II",
+  "item.advancerepair.mending_ii_book": "修繕 II のエンチャント本",
+  "advancerepair.mending_ii.description": "インベントリ内で最も損傷した対象アイテムを、通常の修繕の2倍の速度で修理します。",
+  "advancerepair.config.title": "Advance Repair の設定",
+  "advancerepair.config.mod_status": "MOD の状態",
+  "advancerepair.config.quality_of_life": "利便性機能",
+  "advancerepair.config.tooltip": "ツールチップ",
+  "advancerepair.config.mod_id": "MOD ID",
+  "advancerepair.config.save_exit": "保存して終了",
+  "advancerepair.config.target_namespace": "対象 MOD ID の名前空間：",
+  "advancerepair.config.invalid_id": "無効、または読み込まれていない MOD ID です！",
+  "advancerepair.config.valid_namespace": "有効な読み込み済み名前空間",
+  "advancerepair.advancement.first_repair": "初めての修理",
+  "advancerepair.advancement.first_repair.desc": "Advance Repair で初めて修理する。",
+  "advancerepair.advancement.not_right": "何かがおかしい……",
+  "advancerepair.advancement.not_right.desc": "HR のメモ付き修繕 II の本を作成する。",
+  "advancerepair.book.title": "HR からのメッセージ",
+  "advancerepair.book.page1": "プレイヤーへ\n\nAdvance Repair の更新から長い時間が経ったことは承知しています。\n\nこの MOD を忘れたわけではありません。",
+  "advancerepair.book.page2": "新しいアイデアや改善に取り組んできました。\n\n遊び続けてくれてありがとう。\n\n長らくお待たせして申し訳ありません。\n\n— HR",
+  "advancerepair.book.page3": "シーッ……\n\nイースターエッグを見つけましたね。\n\nそれとも……\nゲームがあなたを見つけたのでしょうか。\n\n何かがおかしい……\n\nまだこの本を閉じないでください。\n\nもう手遅れです。\n\nこのページをここに残すはずではありませんでした。\n\nこれを読めるなら、\nHR はあなたがここにいると知っています。\n\n……そして見ているのは HR だけではありません。"
+}
