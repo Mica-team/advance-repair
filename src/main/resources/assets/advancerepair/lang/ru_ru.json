@@ -1,0 +1,22 @@
+{
+  "enchantment.advancerepair.mending_ii": "Починка II",
+  "item.advancerepair.mending_ii_book": "Зачарованная книга «Починка II»",
+  "advancerepair.mending_ii.description": "Чинит наиболее повреждённый подходящий предмет вдвое быстрее обычной Починки.",
+  "advancerepair.config.title": "Настройки Advance Repair",
+  "advancerepair.config.mod_status": "Состояние мода",
+  "advancerepair.config.quality_of_life": "Удобство игры",
+  "advancerepair.config.tooltip": "Подсказки",
+  "advancerepair.config.mod_id": "ID мода",
+  "advancerepair.config.save_exit": "Сохранить и выйти",
+  "advancerepair.config.target_namespace": "Пространство имён целевого ID мода:",
+  "advancerepair.config.invalid_id": "Недопустимый или не загруженный ID мода!",
+  "advancerepair.config.valid_namespace": "Допустимое загруженное пространство имён",
+  "advancerepair.advancement.first_repair": "Первый ремонт",
+  "advancerepair.advancement.first_repair.desc": "Выполните первый ремонт с помощью Advance Repair.",
+  "advancerepair.advancement.not_right": "Что-то здесь не так...",
+  "advancerepair.advancement.not_right.desc": "Создайте книгу «Починка II» с запиской от HR.",
+  "advancerepair.book.title": "Сообщение от HR",
+  "advancerepair.book.page1": "Уважаемый игрок!\n\nС момента последнего обновления Advance Repair прошло немало времени.\n\nМы не забыли о моде.",
+  "advancerepair.book.page2": "Мы работали над новыми идеями и улучшениями.\n\nСпасибо, что продолжаете играть.\n\nПростите за долгое ожидание.\n\n— HR",
+  "advancerepair.book.page3": "Тсс...\n\nВы нашли пасхалку.\n\nИли, возможно...\nигра нашла вас.\n\nЧто-то здесь не так...\n\nПока не закрывайте книгу.\n\nУже слишком поздно.\n\nЭтой страницы здесь быть не должно.\n\nЕсли вы можете это прочитать,\nHR знает, что вы здесь.\n\n...и наблюдает не только HR."
+}
