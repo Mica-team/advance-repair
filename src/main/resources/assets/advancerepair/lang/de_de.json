@@ -1,0 +1,22 @@
+{
+  "enchantment.advancerepair.mending_ii": "Reparatur II",
+  "item.advancerepair.mending_ii_book": "Verzaubertes Buch der Reparatur II",
+  "advancerepair.mending_ii.description": "Repariert den am stärksten beschädigten geeigneten Gegenstand doppelt so schnell wie normale Reparatur.",
+  "advancerepair.config.title": "Advance-Repair-Konfiguration",
+  "advancerepair.config.mod_status": "Mod-Status",
+  "advancerepair.config.quality_of_life": "Komfortfunktionen",
+  "advancerepair.config.tooltip": "Tooltip",
+  "advancerepair.config.mod_id": "Mod-ID",
+  "advancerepair.config.save_exit": "Speichern und schließen",
+  "advancerepair.config.target_namespace": "Namensraum der Ziel-Mod-ID:",
+  "advancerepair.config.invalid_id": "Ungültige oder nicht geladene Mod-ID!",
+  "advancerepair.config.valid_namespace": "Gültiger geladener Namensraum",
+  "advancerepair.advancement.first_repair": "Erste Reparatur",
+  "advancerepair.advancement.first_repair.desc": "Führe deine erste Advance-Repair-Reparatur durch.",
+  "advancerepair.advancement.not_right": "Irgendetwas stimmt nicht...",
+  "advancerepair.advancement.not_right.desc": "Stelle das Reparatur-II-Buch mit einer Notiz von HR her.",
+  "advancerepair.book.title": "Eine Nachricht von HR",
+  "advancerepair.book.page1": "Liebe Spielerin, lieber Spieler,\n\nseit dem letzten Update von Advance Repair ist viel Zeit vergangen.\n\nWir haben den Mod nicht vergessen.",
+  "advancerepair.book.page2": "Wir arbeiten an neuen Ideen und Verbesserungen.\n\nDanke, dass du weiterspielst.\n\nEntschuldige die lange Wartezeit.\n\n— HR",
+  "advancerepair.book.page3": "Psst...\n\nDu hast ein Easter Egg gefunden.\n\nOder vielleicht...\nhat das Spiel dich gefunden.\n\nIrgendetwas stimmt nicht...\n\nSchließe dieses Buch noch nicht.\n\nEs ist bereits zu spät.\n\nDiese Seite hätte nicht hier sein dürfen.\n\nWenn du das lesen kannst,\nweiß HR, dass du hier bist.\n\n...und HR ist nicht der Einzige, der zusieht."
+}
